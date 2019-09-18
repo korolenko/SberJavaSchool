@@ -33,7 +33,7 @@ public class CoreUtils {
             System.out.println("Enter component name:..");
             Scanner componentScanner = new Scanner(System.in);
             componentName = componentScanner.nextLine();
-            System.out.println("Enter component status:..");
+            System.out.println("Enter component status ('true' or 'false'):..");
             componentStatus = componentScanner.nextBoolean();
             Component component = new Component(i,componentName,componentStatus);
             componentList.add(component);
