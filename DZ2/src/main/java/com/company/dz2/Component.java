@@ -13,11 +13,11 @@ public class Component {
 
     public void setStatus(boolean status){
         if (this.status != status) {
+            System.out.println("current status " + this.status + " has been changed on "+ status);
             this.status = status;
-            System.out.println("status has changed:"+ status);
         }
         else{
-            System.out.println("status hasn't chanded:" + status);
+            System.out.println("current status " + this.status + " hasn't been changed on status " + status);
         }
     }
 

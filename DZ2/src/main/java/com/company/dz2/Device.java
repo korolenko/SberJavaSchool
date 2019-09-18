@@ -1,5 +1,9 @@
 package com.company.dz2;
 
+import org.apache.log4j.BasicConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 public class Device {
@@ -7,8 +11,8 @@ public class Device {
     private String name;
     private ArrayList<Component> components;
     private statuses status;
+    private Logger logger;
 
-    //конструктор Device
     public Device(int id, String name,ArrayList<Component> components){
         this.id = id;
         this.name = name;
@@ -17,6 +21,7 @@ public class Device {
     }
 
     public void showDeviceInfo(){
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("Device " + this.name + " info:");
         System.out.println("id: " + this.id);
         System.out.println("status: " + this.status);
@@ -35,7 +40,9 @@ public class Device {
     }
 
     public void showStatusChanged(){
-        System.out.println("status of device " + this.name + "has changed on " + this.status);
+        BasicConfigurator.configure();
+        logger = LoggerFactory.getLogger(Device.class);
+        logger.info("Device id = " + this.id + " , name = " + this.name + " has changed status on " + this.status);
     }
     public void setDeviceState(){
         int falseStatus = 0;
@@ -46,16 +53,16 @@ public class Device {
             }
         }
 
-        // меняем статус девайса
-        if(falseStatus == 0 && this.status!=statuses.NORMAL){
+        // меняем статус девайса по заданным правилам
+        if(falseStatus == 0){
             this.status = statuses.NORMAL;
             showStatusChanged();
         }
-        else if (falseStatus < this.components.size()% 2 && this.status!=statuses.WARNING){
+        else if (falseStatus < this.components.size()/ 2.0){
             this.status = statuses.WARNING;
             showStatusChanged();
         }
-        else if ( falseStatus>= this.components.size()% 2 && this.status!=statuses.ERROR){
+        else if ( falseStatus>= this.components.size()/ 2.0){
             this.status = statuses.ERROR;
             showStatusChanged();
         }
