@@ -46,7 +46,7 @@ public class HomeWork2 {
                         System.out.println("Enter device id (from 0 to " + coreUtils.getDeviceListSize() + "):..");
                         try {
                             Scanner deviceIdScanner = new Scanner(System.in);
-                            coreUtils.showDevice(deviceIdScanner.nextInt()).showDeviceInfo();
+                            coreUtils.showDevice(deviceIdScanner.nextInt());
                             continue;
                         } catch (InputMismatchException e) {
                             System.out.println("Wrong input");
