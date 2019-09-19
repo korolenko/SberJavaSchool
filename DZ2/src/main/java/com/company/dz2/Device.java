@@ -17,7 +17,7 @@ public class Device {
         this.id = id;
         this.name = name;
         this.components = components;
-        this.status = statuses.NORMAL;
+        setDeviceState();
     }
 
     public void showDeviceInfo(){
