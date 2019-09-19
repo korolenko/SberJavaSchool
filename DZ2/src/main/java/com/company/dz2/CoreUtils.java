@@ -90,6 +90,8 @@ public class CoreUtils {
             eventList.add(event);
         }
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        //запускаем изменения объектов
+        setComponentStatus();
     }
 
     private Device getDevice(int deviceId){
