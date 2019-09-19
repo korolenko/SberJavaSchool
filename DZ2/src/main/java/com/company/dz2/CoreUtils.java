@@ -42,8 +42,8 @@ public class CoreUtils {
         this.deviceList.add(device);
     }
 
-    public Device showDevice(int id){
-        return this.deviceList.get(id);
+    public void showDevice(int id){
+        this.deviceList.get(id).showDeviceInfo();
     }
     //генерация очереди объектов
     public void createEvents(int eventsNumber) throws InputMismatchException{
