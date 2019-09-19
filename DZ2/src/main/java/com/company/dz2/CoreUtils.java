@@ -14,7 +14,7 @@ public class CoreUtils {
     private LinkedList<Event> eventList = new LinkedList<>();
 
     public int getDeviceListSize(){
-        return this.deviceList.size()-1;
+        return this.deviceList.size();
     }
 
     // динамическое создание объектов
