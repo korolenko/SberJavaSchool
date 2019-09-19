@@ -64,7 +64,6 @@ public class HomeWork2 {
                         try {
                             Scanner eventNumberScanner = new Scanner(System.in);
                             coreUtils.createEvents(eventNumberScanner.nextInt());
-                            coreUtils.setComponentStatus();
                             continue;
                         } catch (InputMismatchException e) {
                             System.out.println("Wrong input");
