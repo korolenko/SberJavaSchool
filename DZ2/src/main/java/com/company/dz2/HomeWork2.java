@@ -38,44 +38,25 @@ public class HomeWork2 {
                     }
                 }
                 case (2):{
-                    if(coreUtils.getDeviceListSize() < 1){
-                        System.out.println("Create devices!");
+                    try {
+                        coreUtils.showDevice();
                         continue;
-                    }
-                    else {
-                        System.out.println("Enter device id (from 0 to " + (coreUtils.getDeviceListSize() -1) + "):..");
-                        try {
-                            Scanner deviceIdScanner = new Scanner(System.in);
-                            coreUtils.showDevice(deviceIdScanner.nextInt());
-                            continue;
-                        } catch (InputMismatchException e) {
-                            System.out.println("Wrong input");
-                            continue;
-                        }
+                    }catch (InputMismatchException e){
+                        System.out.println("Wrong input");
+                        continue;
                     }
                 }
                 case (3):{
-                    if(coreUtils.getDeviceListSize() < 1){
-                        System.out.println("Create devices!");
+                    try {
+                        coreUtils.createEvents();
                         continue;
-                    }
-                    else {
-                        System.out.println("Enter number of events:..");
-                        try {
-                            Scanner eventNumberScanner = new Scanner(System.in);
-                            coreUtils.createEvents(eventNumberScanner.nextInt());
-                            continue;
-                        } catch (InputMismatchException e) {
-                            System.out.println("Wrong input");
-                            continue;
-                        }
+                    }catch (InputMismatchException e){
+                        System.out.println("Wrong input");
+                        continue;
                     }
                 }
                 case (999):{
                     break;
-                }
-                case (0):{
-                    continue;
                 }
             }
         }
