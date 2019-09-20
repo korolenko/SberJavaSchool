@@ -1,5 +1,36 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Fibonacci {
-    public static void createFibonacciNumbers(int amount) {
+
+    public void doFibonachi (){
+        int amount;
+        System.out.println("Welcome to Fibonachi numbers creator!");
+        while (true){
+            System.out.println("\nPlease enter the amount of numbers or 999 for exit..");
+            Scanner in = new Scanner(System.in);
+            try {
+                amount = in.nextInt();
+                if(amount<0){
+                    System.out.println("Please, enter a number >=0");
+                }
+                else if(amount==999)
+                {
+                    break;
+                }
+                else if(amount == 0){
+                    System.out.println("Fibonachi sequence is zero");
+                }
+                else {
+                    this.createFibonacciNumbers(amount);
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please,enter a number");
+            }
+        }
+    }
+    //main logic
+    private void createFibonacciNumbers(int amount) {
         int a, b, next;
         a = 0;
         b = 1;
