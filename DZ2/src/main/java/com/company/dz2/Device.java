@@ -1,6 +1,5 @@
 package com.company.dz2;
 
-import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ public class Device {
     private String name;
     private ArrayList<Component> components;
     private statuses status;
-    private Logger logger;
+    private Logger logger = LoggerFactory.getLogger(Device.class);
 
     public Device(int id, String name,ArrayList<Component> components){
         this.id = id;
@@ -40,8 +39,6 @@ public class Device {
     }
 
     public void showStatusChanged(){
-        BasicConfigurator.configure();
-        logger = LoggerFactory.getLogger(Device.class);
         logger.info("Device id = " + this.id + " , name = " + this.name + " has changed status on " + this.status);
     }
     public void setDeviceState(){
@@ -54,15 +51,15 @@ public class Device {
         }
 
         // меняем статус девайса по заданным правилам
-        if(falseStatus == 0){
+        if(falseStatus == 0 && this.status!=statuses.NORMAL){
             this.status = statuses.NORMAL;
             showStatusChanged();
         }
-        else if (falseStatus < this.components.size()/ 2.0){
+        else if (falseStatus < this.components.size()/ 2.0 && this.status!=statuses.WARNING){
             this.status = statuses.WARNING;
             showStatusChanged();
         }
-        else if ( falseStatus>= this.components.size()/ 2.0){
+        else if ( falseStatus>= this.components.size()/ 2.0 && this.status!=statuses.ERROR){
             this.status = statuses.ERROR;
             showStatusChanged();
         }
