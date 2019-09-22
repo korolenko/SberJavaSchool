@@ -1,6 +1,6 @@
 # SberJavaSchool
 Домашнее задание №2
-  Имеется набор устройств Device. Каждый device имеет id (Integer), name (String), набор компонентов Component и status (для статуса устройства предусмотрено три значения: normal, warning, error).
+Имеется набор устройств Device. Каждый device имеет id (Integer), name (String), набор компонентов Component и status (для статуса устройства предусмотрено три значения: normal, warning, error).
 
   Component имеет id (Integer), name, status (Boolean). Status true означает что компонент работает исправно, а false – что компонент сломан.
 
