@@ -33,6 +33,9 @@ public class ListClass {
         System.out.println(deletedList.size());
         this.exampleList.clear();
         this.exampleList = deletedList;
+
+        //плюс короткий вариант
+        //exampleList.removeIf(element -> element.equals(255));
     }
     void deleteWitoutStream(){
 
@@ -43,6 +46,7 @@ public class ListClass {
                 listIterator.remove();
             }
         }
+        //плюс другой способ
         /*List<Integer> deletedList = new ArrayList<>();
         for (int i = 0; i < exampleList.size()-1; i++){
             if(!exampleList.get(i).equals(255)){
