@@ -44,7 +44,7 @@ public class Main {
 
 
     public static void customerErrorVoid() {
-        throw new CustomerError("This is customer unchecked exception");
+        throw new CustomerError("This is customer runtime exception");
     }
 
     public static void getCollectionClass() throws NoSuchFieldException {
