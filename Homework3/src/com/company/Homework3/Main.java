@@ -30,12 +30,12 @@ public class Main {
         System.out.println("==: " + (cat1==cloneCat1));
         System.out.println("equals: " + cat1.equals(cloneCat1));
     }
-    public static void exception(int index){
+    public static void exception(int index) throws CustomerCheckedException {
         //checked exception
         int testArray[] = {1,2,3};
         int number;
         if (index > testArray.length - 1){
-            throw new ArrayIndexOutOfBoundsException("index must be less than the array size");
+            throw new CustomerCheckedException("index must be less than the array size");
         }
         else {
             System.out.println(testArray[index]);
@@ -43,8 +43,8 @@ public class Main {
     }
 
 
-    public static void callStackOverflow() {
-        throw new StackOverflowError("You are trying to create stackoverflow");
+    public static void customerErrorVoid() {
+        throw new CustomerError("This is customer unchecked exception");
     }
 
     public static void getCollectionClass() throws NoSuchFieldException {
@@ -82,7 +82,7 @@ public class Main {
                 case (2): {
                     try {
                         exception(4);
-                    }catch (ArrayIndexOutOfBoundsException e){
+                    }catch (CustomerCheckedException e){
                         System.out.println(e.getMessage());
                     }finally {
                        continue;
@@ -90,8 +90,8 @@ public class Main {
                 }
                 case (3): {
                     try {
-                        callStackOverflow();
-                    }catch (StackOverflowError e){
+                        customerErrorVoid();
+                    }catch (CustomerError e){
                         System.out.println(e.getMessage());
                     }finally {
                         continue;
