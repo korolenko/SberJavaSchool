@@ -13,10 +13,10 @@ public abstract class Event {
     }
     
     public int getDeviceId() {
-        return deviceId;
+        return this.deviceId;
     }
 
     public int getComponentId() {
-        return componentId;
+        return this.componentId;
     }
 }
