@@ -44,19 +44,6 @@ public class CoreUtils {
         this.deviceList.add(device);
     }
 
-    private void EventInfo(int counter,String event, int deviceId, int componentId){
-        System.out.println(counter + ") " + event + ", deviceid: " + deviceId + ", " +
-                "componentid: " + componentId);
-    }
-
-    //данный блок кода вынесен в функцию во избежание дублирования
-    private void setComponentStatus(boolean status, int deviceId, int componentid){
-        // меняем статус компонента
-        this.deviceList.get(deviceId).getComponent(componentid).setStatus(status);
-        //пересчитываем состояние девайса
-        this.deviceList.get(deviceId).setDeviceState();
-    }
-
     public void showDevice(int id){
          this.deviceList.get(id).showDeviceInfo();
     }
@@ -109,8 +96,21 @@ public class CoreUtils {
         setComponentStatus();
     }
 
+    private void EventInfo(int counter,String event, int deviceId, int componentId){
+        System.out.println(counter + ") " + event + ", deviceid: " + deviceId + ", " +
+                "componentid: " + componentId);
+    }
+
+    //данный блок кода вынесен в функцию во избежание дублирования
+    private void setComponentStatus(boolean status, int deviceId, int componentid){
+        // меняем статус компонента
+        this.deviceList.get(deviceId).getComponent(componentid).setStatus(status);
+        //пересчитываем состояние девайса
+        this.deviceList.get(deviceId).setDeviceState();
+    }
+    
     //метод обработки очереди событий, преобразования объектов
-    public void setComponentStatus(){
+    private void setComponentStatus(){
         int deviceId;
         int componentid;
         Event event;
