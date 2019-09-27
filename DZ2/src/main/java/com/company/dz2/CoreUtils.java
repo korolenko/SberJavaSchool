@@ -44,98 +44,87 @@ public class CoreUtils {
         this.deviceList.add(device);
     }
 
-    public void showDevice() throws InputMismatchException{
-        if(getDeviceListSize() < 1){
-            System.out.println("Create devices!");
-        }
-        else {
-            System.out.println("Enter device id (from 0 to " + (getDeviceListSize() -1) + "):..");
-            Scanner deviceIdScanner = new Scanner(System.in);
-            deviceList.get(deviceIdScanner.nextInt()).showDeviceInfo();
-        }
+    private void EventInfo(int counter,String event, int deviceId, int componentId){
+        System.out.println(counter+") " + event + ", deviceid: " + deviceId + ", " +
+                "componentid: " + componentId);
+    }
+
+    //данный блок кода вынесен в функцию во избежание дублирования
+    private void setComponentStatus(boolean status, int deviceId, int componentid){
+        // меняем статус компонента
+        this.deviceList.get(deviceId).getComponent(componentid).setStatus(status);
+        //пересчитываем состояние девайсв
+        this.deviceList.get(deviceId).setDeviceState();
+    }
+
+    public void showDevice(int id){
+         this.deviceList.get(id).showDeviceInfo();
     }
     //генерация очереди объектов
-    public void createEvents() throws InputMismatchException{
-        if(getDeviceListSize() < 1){
-            System.out.println("Create devices!");
-        }
-        else {
-            int eventsNumber;
-            int check;
-            int devicesNumber;
-            int componentsNumber;
-            int deviceId;
-            int componentId;
-            Event event = null;
-            
-            System.out.println("Enter number of events:..");
-            Scanner eventNumberScanner = new Scanner(System.in);
-            eventsNumber = eventNumberScanner.nextInt();
-            devicesNumber = deviceList.size();
-            this.eventList.clear();
+    public void createEvents(int eventsNumber) throws InputMismatchException{
+        int eventType;
+        int devicesNumber;
+        int componentsNumber;
+        int deviceId;
+        int componentId;
+        Event event = null;
+        devicesNumber = deviceList.size();
 
-            //генерация случайных deviceId и componentId,
-            //но только в пределах созданных девайсов и их компонентов
-            //для случайных errorEvent и restoreEvent
-            Random eventRandom = new Random();
-            Random deviceRandom = new Random();
-            Random componentRandom = new Random();
+        this.eventList.clear();
+        Random eventRandom = new Random();
+        Random deviceRandom = new Random();
+        Random componentRandom = new Random();
 
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println("Generated events:");
-            for (int i = 0; i < eventsNumber; i++) {
-                check = eventRandom.nextInt(2);
-                switch (check) {
-                    case (0): {
-                        deviceId = deviceRandom.nextInt(devicesNumber);
-                        componentsNumber = this.deviceList.get(deviceId).getComponentsNumber();
-                        componentId = componentRandom.nextInt(componentsNumber);
-                        event = new ErrorEvent(deviceId, componentId);
-                        System.out.println(i + ") errorEvent, deviceid: " + deviceId + ", " +
-                                "componentid: " + componentId);
-                        break;
-                    }
-                    case (1): {
-                        deviceId = deviceRandom.nextInt(devicesNumber);
-                        componentsNumber = this.deviceList.get(deviceId).getComponentsNumber();
-                        componentId = componentRandom.nextInt(componentsNumber);
-                        event = new RestoreEvent(deviceId, componentId);
-                        System.out.println(i + ") restoreEvent, deviceid: " + deviceId + ", " +
-                                "componentid: " + componentId);
-                        break;
-                    }
+        //генерация случайных deviceId и componentId,
+        //но только в пределах созданных девайсов и их компонентов
+        //для случайных errorEvent и restoreEvent
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("Generated events:");
+        for (int i = 0; i<eventsNumber; i++){
+            //получаем тип события
+            eventType = eventRandom.nextInt(2);
+            //получаем deviceId
+            deviceId = deviceRandom.nextInt(devicesNumber);
+            //получаем количество компонентов девайса и нужный componentId
+            componentsNumber = this.deviceList.get(deviceId).getComponentsNumber();
+            componentId = componentRandom.nextInt(componentsNumber);
+
+            switch (eventType ){
+                case (0):{
+                    event = new ErrorEvent(deviceId, componentId);
+                    EventInfo(i,"errorEvent",deviceId,componentId);
+                    break;
                 }
-                eventList.add(event);
+                case (1):{
+                    event = new RestoreEvent(deviceId, componentId);
+                    EventInfo(i,"restoreEvent",deviceId,componentId);
+                    break;
+                }
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //запускаем изменения объектов
-            setComponentStatus();
+            eventList.add(event);
         }
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        setComponentStatus();
     }
 
-    private Device getDevice(int deviceId){
-        return this.deviceList.get(deviceId);
-    }
     //обработка очереди, преобразование объектов
     public void setComponentStatus(){
         int deviceId;
         int componentid;
         Event event;
         ListIterator<Event> eventIterator = eventList.listIterator();
-        
-        // обходим все имеющиеся события, изменяем статус компонентов
+
         while (eventIterator.hasNext()){
             event = eventIterator.next();
             deviceId = event.getDeviceId();
             componentid = event.getComponentId();
             if (event instanceof ErrorEvent) {
-                getDevice(deviceId).getComponent(componentid).setStatus(false);
-                getDevice(deviceId).setDeviceState();
+                setComponentStatus(false,deviceId,componentid);
             }
             else if (event instanceof RestoreEvent){
-                getDevice(deviceId).getComponent(componentid).setStatus(true);
-                getDevice(deviceId).setDeviceState();
+                setComponentStatus(true,deviceId,componentid);
             }
         }
     }
 }
+
