@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class Device {
     private int id;
     private String name;
-    private ArrayList<Component> components;
+    private List<Component> components;
     private statuses status;
     private Logger logger = LoggerFactory.getLogger(Device.class);
 
-    public Device(int id, String name,ArrayList<Component> components){
+    public Device(int id, String name,List<Component> components){
         this.id = id;
         this.name = name;
         this.components = components;
