@@ -16,6 +16,7 @@ public class Device {
         this.id = id;
         this.name = name;
         this.components = components;
+        //устанавливаем статус девайса, согласно совокупности состояний компонентов
         setDeviceState();
     }
 
