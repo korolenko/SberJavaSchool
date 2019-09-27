@@ -18,16 +18,18 @@ public class CoreUtils {
 
     // динамическое создание объектов
     public void createDevice(int id) throws InputMismatchException{
+        
+        //создаем девайс
         List<Component> componentList = new ArrayList<>();
         System.out.println("Enter device name:..");
         Scanner in = new Scanner(System.in);
         String deviceName = in.nextLine();
+        
+        //создаем компоненты девайса
         System.out.println("Enter number of components:..");
         int componentsNumber = in.nextInt();
-
         String componentName;
         boolean componentStatus;
-
         for(int i = 0; i<componentsNumber; i++){
             System.out.println("Enter component name:..");
             Scanner componentScanner = new Scanner(System.in);
@@ -37,6 +39,7 @@ public class CoreUtils {
             Component component = new Component(i,componentName,componentStatus);
             componentList.add(component);
         }
+        
         Device device = new Device(id,deviceName,componentList);
         this.deviceList.add(device);
     }
@@ -119,7 +122,8 @@ public class CoreUtils {
         int componentid;
         Event event;
         ListIterator<Event> eventIterator = eventList.listIterator();
-
+        
+        // обходим все имеющиеся события, изменяем статус компонентов
         while (eventIterator.hasNext()){
             event = eventIterator.next();
             deviceId = event.getDeviceId();
