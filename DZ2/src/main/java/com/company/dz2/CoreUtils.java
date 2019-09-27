@@ -45,7 +45,7 @@ public class CoreUtils {
     }
 
     private void EventInfo(int counter,String event, int deviceId, int componentId){
-        System.out.println(counter+") " + event + ", deviceid: " + deviceId + ", " +
+        System.out.println(counter + ") " + event + ", deviceid: " + deviceId + ", " +
                 "componentid: " + componentId);
     }
 
@@ -53,13 +53,14 @@ public class CoreUtils {
     private void setComponentStatus(boolean status, int deviceId, int componentid){
         // меняем статус компонента
         this.deviceList.get(deviceId).getComponent(componentid).setStatus(status);
-        //пересчитываем состояние девайсв
+        //пересчитываем состояние девайса
         this.deviceList.get(deviceId).setDeviceState();
     }
 
     public void showDevice(int id){
          this.deviceList.get(id).showDeviceInfo();
     }
+    
     //генерация очереди объектов
     public void createEvents(int eventsNumber) throws InputMismatchException{
         int eventType;
@@ -89,6 +90,7 @@ public class CoreUtils {
             componentsNumber = this.deviceList.get(deviceId).getComponentsNumber();
             componentId = componentRandom.nextInt(componentsNumber);
 
+            //создаем события, логируем процесс создания
             switch (eventType ){
                 case (0):{
                     event = new ErrorEvent(deviceId, componentId);
@@ -107,17 +109,19 @@ public class CoreUtils {
         setComponentStatus();
     }
 
-    //обработка очереди, преобразование объектов
+    //метод обработки очереди событий, преобразования объектов
     public void setComponentStatus(){
         int deviceId;
         int componentid;
         Event event;
         ListIterator<Event> eventIterator = eventList.listIterator();
 
+        //обходим лист событий, меняем статусы компонентам, пересчитываем состояние девайса
         while (eventIterator.hasNext()){
             event = eventIterator.next();
             deviceId = event.getDeviceId();
             componentid = event.getComponentId();
+            
             if (event instanceof ErrorEvent) {
                 setComponentStatus(false,deviceId,componentid);
             }
