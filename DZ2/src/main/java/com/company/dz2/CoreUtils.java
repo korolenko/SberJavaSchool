@@ -44,17 +44,23 @@ public class CoreUtils {
         this.deviceList.add(device);
     }
 
-    public void showDevice(int id){
-         this.deviceList.get(id).showDeviceInfo();
+    public void showDevice() throws InputMismatchException {
+        if (getDeviceListSize() < 1) {
+            System.out.println("Create devices!");
+        } else {
+            System.out.println("Enter device id (from 0 to " + (getDeviceListSize() - 1) + "):..");
+            Scanner deviceIdScanner = new Scanner(System.in);
+            deviceList.get(deviceIdScanner.nextInt()).showDeviceInfo();
+        }
     }
-    
     //генерация очереди объектов
-    public void createEvents(int eventsNumber) throws InputMismatchException{
+    public void createEvents() throws InputMismatchException{
         int eventType;
         int devicesNumber;
         int componentsNumber;
         int deviceId;
         int componentId;
+        int eventsNumber;
         Event event = null;
         devicesNumber = deviceList.size();
 
@@ -62,6 +68,9 @@ public class CoreUtils {
         Random eventRandom = new Random();
         Random deviceRandom = new Random();
         Random componentRandom = new Random();
+        System.out.println("Enter events number:..");
+        Scanner in = new Scanner(System.in);
+        eventsNumber = in.nextInt();
 
         //генерация случайных deviceId и componentId,
         //но только в пределах созданных девайсов и их компонентов
