@@ -9,7 +9,6 @@ public class CoreUtils {
 
     //список девайсов
     private List<Device> deviceList = new ArrayList<>();
-    private Event event;
     //список событий
     private List<Event> eventList = new LinkedList<>();
 
@@ -64,7 +63,8 @@ public class CoreUtils {
             int componentsNumber;
             int deviceId;
             int componentId;
-
+            Event event = null;
+            
             System.out.println("Enter number of events:..");
             Scanner eventNumberScanner = new Scanner(System.in);
             eventsNumber = eventNumberScanner.nextInt();
@@ -87,7 +87,7 @@ public class CoreUtils {
                         deviceId = deviceRandom.nextInt(devicesNumber);
                         componentsNumber = this.deviceList.get(deviceId).getComponentsNumber();
                         componentId = componentRandom.nextInt(componentsNumber);
-                        this.event = new ErrorEvent(deviceId, componentId);
+                        event = new ErrorEvent(deviceId, componentId);
                         System.out.println(i + ") errorEvent, deviceid: " + deviceId + ", " +
                                 "componentid: " + componentId);
                         break;
@@ -96,7 +96,7 @@ public class CoreUtils {
                         deviceId = deviceRandom.nextInt(devicesNumber);
                         componentsNumber = this.deviceList.get(deviceId).getComponentsNumber();
                         componentId = componentRandom.nextInt(componentsNumber);
-                        this.event = new RestoreEvent(deviceId, componentId);
+                        event = new RestoreEvent(deviceId, componentId);
                         System.out.println(i + ") restoreEvent, deviceid: " + deviceId + ", " +
                                 "componentid: " + componentId);
                         break;
