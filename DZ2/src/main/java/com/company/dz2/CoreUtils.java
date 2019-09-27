@@ -8,10 +8,10 @@ import java.util.*;
 public class CoreUtils {
 
     //список девайсов
-    private ArrayList<Device> deviceList = new ArrayList<>();
+    private List<Device> deviceList = new ArrayList<>();
     private Event event;
     //список событий
-    private LinkedList<Event> eventList = new LinkedList<>();
+    private List<Event> eventList = new LinkedList<>();
 
     public int getDeviceListSize(){
         return this.deviceList.size();
@@ -19,7 +19,7 @@ public class CoreUtils {
 
     // динамическое создание объектов
     public void createDevice(int id) throws InputMismatchException{
-        ArrayList<Component> componentList = new ArrayList<>();
+        List<Component> componentList = new ArrayList<>();
         System.out.println("Enter device name:..");
         Scanner in = new Scanner(System.in);
         String deviceName = in.nextLine();
