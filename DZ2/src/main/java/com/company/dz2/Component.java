@@ -18,7 +18,7 @@ public class Component {
     }
 
     public boolean getStatus() {
-        return status;
+        return this.status;
     }
 
     public String toString(){
