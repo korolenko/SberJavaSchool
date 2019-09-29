@@ -27,37 +27,26 @@ public class HomeWork2 {
                 System.out.println("Please,enter a number 1,2,3 or 999");
 
             }
-            switch (menu){
-                case (1):{
-                    try {
+            try {
+                switch (menu) {
+                    case (1): {
                         coreUtils.createDevice(deviceCounter++);
                         continue;
-                    }catch (InputMismatchException e){
-                        System.out.println("Wrong input");
-                        continue;
                     }
-                }
-                case (2):{
-                    try {
+                    case (2): {
                         coreUtils.showDevice();
                         continue;
-                    }catch (InputMismatchException e){
-                        System.out.println("Wrong input");
-                        continue;
                     }
-                }
-                case (3):{
-                    try {
+                    case (3): {
                         coreUtils.createEvents();
                         continue;
-                    }catch (InputMismatchException e){
-                        System.out.println("Wrong input");
-                        continue;
+                    }
+                    case (999): {
+                        break;
                     }
                 }
-                case (999):{
-                    break;
-                }
+            }catch (InputMismatchException e){
+                System.out.println("wrong input");
             }
         }
     }
