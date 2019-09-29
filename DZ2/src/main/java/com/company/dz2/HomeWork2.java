@@ -31,15 +31,15 @@ public class HomeWork2 {
                 switch (menu) {
                     case (1): {
                         coreUtils.createDevice(deviceCounter++);
-                        continue;
+                        //continue;
                     }
                     case (2): {
                         coreUtils.showDevice();
-                        continue;
+                        //continue;
                     }
                     case (3): {
                         coreUtils.createEvents();
-                        continue;
+                        //continue;
                     }
                     case (999): {
                         break;
