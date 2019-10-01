@@ -42,5 +42,5 @@ INSERT INTO product (maker, model, type) VALUES ('apple', 'macbook', 'laptop');
 INSERT INTO product (maker, model, type) VALUES ('apple', 'iphone', 'phone');
 INSERT INTO product (maker, model, type) VALUES ('asus', 'rogphone', 'phone');
 
-INSERT INTO laptop (model, ram, price,screen) VALUES ('gl502vsss', 16, 106, 15);
+INSERT INTO laptop (model, ram, price,screen) VALUES ('gl502vs', 16, 106, 15);
 INSERT INTO laptop (model, ram, price,screen) VALUES ('macbook', 999, 130, 13);
