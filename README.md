@@ -13,7 +13,7 @@
 
 НАЧАЛЬНЫЕ ДАННЫЕ:
 
-Были создана MySQL база данных Homework5 и 3 таблицы product, laptop и phones. Laptop и Phones связаны с Product через FOREIGN KEY model:
+Были создана MySQL база данных Homework5 итаблицы product и laptop. Laptop связана с Product через FOREIGN KEY model:
 
 CREATE TABLE product 
 (
@@ -37,17 +37,6 @@ primary key (id),
 FOREIGN KEY (model) REFERENCES product(model) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE phones 
-(
-id smallint unsigned not null auto_increment, 
-model varchar(20) not null, 
-memory smallint not null,
-os varchar(20) not null, 
-price smallint not null, 
-primary key (id),
-FOREIGN KEY (model) REFERENCES product(model) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
 INSERT INTO product (maker, model, type) VALUES ('asus', 'gl502vs', 'laptop');
 INSERT INTO product (maker, model, type) VALUES ('apple', 'macbook', 'laptop');
 INSERT INTO product (maker, model, type) VALUES ('apple', 'iphone', 'phone');
@@ -55,6 +44,3 @@ INSERT INTO product (maker, model, type) VALUES ('asus', 'rogphone', 'phone');
 
 INSERT INTO laptop (model, ram, price,screen) VALUES ('gl502vsss', 16, 106, 15);
 INSERT INTO laptop (model, ram, price,screen) VALUES ('macbook', 999, 130, 13);
-
-INSERT INTO phones (model, memory, os, price) VALUES ('iphone', 64, 'IOS', 90);
-INSERT INTO phones (model, memory, os, price) VALUES ('rogphone', 64, 'Android', 60);
