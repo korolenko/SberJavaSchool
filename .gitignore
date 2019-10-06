@@ -24,3 +24,14 @@ hs_err_pid*
 
 #.idea 
 /.idea/*
+HomeWork1/.idea/workspace.xml
+Homework3/.idea/encodings.xml
+Homework3/.idea/Homework3.iml
+Homework3/.idea/modules.xml
+Homework3/.idea/vcs.xml
+Homework3/.idea/workspace.xml
+*.xml
+*.xml___jb_tmp___
+*.java___jb_tmp___
+*.properties
+*.lst
