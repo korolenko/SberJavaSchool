@@ -1,6 +1,5 @@
 package com.company.Homework4;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
@@ -26,7 +25,7 @@ public class ListClass {
         }
         return values;
     }
-    void deleteWithStream(){
+    List deleteWithStream(){
         List<Integer> deletedList = this.exampleList.stream()
                 .filter(s -> !s.equals(255))
                 .collect(Collectors.toList());
@@ -36,8 +35,9 @@ public class ListClass {
 
         //плюс короткий вариант
         //exampleList.removeIf(element -> element.equals(255));
+        return this.exampleList;
     }
-    void deleteWitoutStream(){
+    List deleteWitoutStream(){
 
         ListIterator<Integer> listIterator = exampleList.listIterator();
         while (listIterator.hasNext()){
@@ -55,6 +55,7 @@ public class ListClass {
         }
         this.exampleList.clear();
         this.exampleList = deletedList;*/
+        return this.exampleList;
     }
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
