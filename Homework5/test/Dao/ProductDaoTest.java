@@ -33,6 +33,7 @@ public class ProductDaoTest {
     public void setUp(){
         product = new Product("testMaker", "testModel", "testType");
         Mockito.when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
+        Mockito.when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
         Mockito.when(entityManager.getTransaction()).thenReturn(entityTransaction);
         productDao = new ProductDao(entityManager);
     }
