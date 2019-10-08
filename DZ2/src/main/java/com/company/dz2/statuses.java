@@ -1,6 +1,6 @@
 package com.company.dz2;
 
-enum statuses {
+public enum statuses {
     NORMAL,
     WARNING,
     ERROR

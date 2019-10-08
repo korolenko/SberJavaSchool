@@ -1,9 +1,9 @@
-package com.company.dz2;
+package com.company.dz2.device;
 
+import com.company.dz2.statuses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Device {

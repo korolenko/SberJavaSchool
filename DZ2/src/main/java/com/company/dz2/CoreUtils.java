@@ -1,5 +1,13 @@
 package com.company.dz2;
 
+import com.company.dz2.device.Component;
+import com.company.dz2.device.Device;
+import com.company.dz2.events.ErrorEvent;
+import com.company.dz2.events.Event;
+import com.company.dz2.events.RestoreEvent;
+import com.company.dz2.factory.ErrorEventFactory;
+import com.company.dz2.factory.RestoreEventFactory;
+
 import java.util.*;
 
 /*
@@ -20,7 +28,6 @@ public class CoreUtils {
     public void createDevice(int id) throws InputMismatchException{
         
         //создаем девайс
-        List<Component> componentList = new ArrayList<>();
         System.out.println("Enter device name:..");
         Scanner in = new Scanner(System.in);
         String deviceName = in.nextLine();
@@ -28,8 +35,16 @@ public class CoreUtils {
         //создаем компоненты девайса
         System.out.println("Enter number of components:..");
         int componentsNumber = in.nextInt();
+        
+        Device device = new Device(id,deviceName,createComponents(componentsNumber));
+        this.deviceList.add(device);
+    }
+
+    private List<Component> createComponents(int componentsNumber){
         String componentName;
         boolean componentStatus;
+        List<Component> componentList = new ArrayList<>();
+
         for(int i = 0; i<componentsNumber; i++){
             System.out.println("Enter component name:..");
             Scanner componentScanner = new Scanner(System.in);
@@ -39,9 +54,7 @@ public class CoreUtils {
             Component component = new Component(i,componentName,componentStatus);
             componentList.add(component);
         }
-        
-        Device device = new Device(id,deviceName,componentList);
-        this.deviceList.add(device);
+        return componentList;
     }
 
     public void showDevice() throws InputMismatchException {
@@ -53,6 +66,7 @@ public class CoreUtils {
             deviceList.get(deviceIdScanner.nextInt()).showDeviceInfo();
         }
     }
+
     //генерация очереди объектов
     public void createEvents() throws InputMismatchException{
         if(this.deviceList.size()>0) {
@@ -66,9 +80,14 @@ public class CoreUtils {
             devicesNumber = deviceList.size();
 
             this.eventList.clear();
+
             Random eventRandom = new Random();
             Random deviceRandom = new Random();
             Random componentRandom = new Random();
+
+            ErrorEventFactory errorEventFactory = new ErrorEventFactory();
+            RestoreEventFactory restoreEventFactory = new RestoreEventFactory();
+
             System.out.println("Enter events number:..");
             Scanner in = new Scanner(System.in);
             eventsNumber = in.nextInt();
@@ -90,12 +109,12 @@ public class CoreUtils {
                         //создаем события, логируем процесс создания
                         switch (eventType) {
                             case (0): {
-                                event = new ErrorEvent(deviceId, componentId);
+                                event = errorEventFactory.createEvent(deviceId, componentId);
                                 EventInfo(i, "errorEvent", deviceId, componentId);
                                 break;
                             }
                             case (1): {
-                                event = new RestoreEvent(deviceId, componentId);
+                                event = restoreEventFactory.createEvent(deviceId, componentId);
                                 EventInfo(i, "restoreEvent", deviceId, componentId);
                                 break;
                             }

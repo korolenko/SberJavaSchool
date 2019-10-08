@@ -1,4 +1,4 @@
-package com.company.dz2;
+package com.company.dz2.device;
 
 public class Component {
     private int id;
