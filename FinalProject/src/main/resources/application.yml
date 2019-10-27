@@ -1,0 +1,28 @@
+server:
+  port: 5432
+  #context-path: /rest
+
+spring:
+  application:
+    name: "finalproject"
+  main:
+    banner-mode: "log"
+  datasource:
+    #driverClassName: org.h2.Driver
+    driverClassName: org.postgresql.Driver
+    #url: jdbc:h2:mem:test
+    url: jdbc:postgresql://localhost/test?createDatabaseIfNotExist=true
+    #username: admin
+    password: 123
+jpa:
+  generate-ddl: false
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+  database: postgresql
+  open-in-view: false
+
+logging:
+  level:
+    org:
+      springframework: ERROR
