@@ -1,17 +1,19 @@
 package FinalProject.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "carbrand")
 @Data
+@Table(name = "sparepart", schema = "catalog")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class SparePartEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")

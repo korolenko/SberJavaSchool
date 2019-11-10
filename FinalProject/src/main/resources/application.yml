@@ -1,6 +1,5 @@
 server:
-  port: 5432
-  #context-path: /rest
+  port: 8080
 
 spring:
   application:
@@ -8,19 +7,16 @@ spring:
   main:
     banner-mode: "log"
   datasource:
-    #driverClassName: org.h2.Driver
     driverClassName: org.postgresql.Driver
-    #url: jdbc:h2:mem:test
-    url: jdbc:postgresql://localhost/test?createDatabaseIfNotExist=true
-    #username: admin
-    password: 123
+    url: jdbc:postgresql://82.196.10.5/autoservice
+    username: autoservice
+    password: sayplease
 jpa:
-  generate-ddl: false
+  generate-ddl: true
   hibernate:
-    ddl-auto: update
+    hbm2ddl-auto: update
   show-sql: true
   database: postgresql
-  open-in-view: false
 
 logging:
   level:
