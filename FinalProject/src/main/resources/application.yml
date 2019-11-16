@@ -8,9 +8,9 @@ spring:
     banner-mode: "log"
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://82.196.10.5/autoservice
-    username: autoservice
-    password: sayplease
+    url: jdbc:postgresql://XXX/autoservice
+    username: XXX
+    password: XXX
 jpa:
   generate-ddl: true
   hibernate:
