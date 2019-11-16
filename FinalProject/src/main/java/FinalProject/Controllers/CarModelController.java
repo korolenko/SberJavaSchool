@@ -3,11 +3,12 @@ package FinalProject.Controllers;
 
 import FinalProject.Entities.CarModelEntity;
 import FinalProject.Services.CarModelService;
+import FinalProject.dto.CarModelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/carmodel")
+@RequestMapping("/model")
 public class CarModelController {
 
     @Autowired
@@ -19,22 +20,19 @@ public class CarModelController {
         return carModelService.findById(id);
     }
 
-    @PostMapping("create/{manufacter}/{model}")
+    @PostMapping("")
     @ResponseBody
-    public CarModelEntity create(@PathVariable String manufacter,@PathVariable String model) {
-        CarModelEntity carModelEntity = new CarModelEntity();
-        carModelEntity.setManifacter(manufacter);
-        carModelEntity.setModel(model);
-        return carModelService.create(carModelEntity);
+    public CarModelEntity create(@RequestBody CarModelDto carModelDto) {
+        return carModelService.create(carModelDto);
     }
 
-    @PutMapping("update/{id}/{model}")
+    @PutMapping("")
     @ResponseBody
-    public CarModelEntity update(@PathVariable Long id, @PathVariable String model){
-        return carModelService.update(id, model);
+    public CarModelEntity update(@RequestBody CarModelDto carModelDto){
+        return carModelService.update(carModelDto);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
     public void delete(@PathVariable Long id){
         carModelService.delete(id);

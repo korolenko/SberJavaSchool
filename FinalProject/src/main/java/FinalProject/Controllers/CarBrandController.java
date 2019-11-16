@@ -2,11 +2,12 @@ package FinalProject.Controllers;
 
 import FinalProject.Entities.CarBrandEntity;
 import FinalProject.Services.CarBrandService;
+import FinalProject.dto.CarBrandDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/carbrand")
+@RequestMapping("/brand")
 public class CarBrandController {
 
     @Autowired
@@ -18,21 +19,19 @@ public class CarBrandController {
         return carBrandService.findById(id);
     }
 
-    @PostMapping("create/{manufacter}")
+    @PostMapping("")
     @ResponseBody
-    public CarBrandEntity create(@PathVariable String manufacter) {
-        CarBrandEntity carBrandEntity = new CarBrandEntity();
-        carBrandEntity.setManifacter(manufacter);
-        return carBrandService.create(carBrandEntity);
+    public CarBrandEntity create(@RequestBody CarBrandDto carBrandDto) {
+        return carBrandService.create(carBrandDto);
     }
 
-    @PutMapping("update/{id}/{manufacter}")
+    @PutMapping("")
     @ResponseBody
-    public CarBrandEntity update(@PathVariable Long id, @PathVariable String manufacter){
-        return carBrandService.update(id, manufacter);
+    public CarBrandEntity update(@RequestBody CarBrandDto carBrandDto) {
+        return carBrandService.update(carBrandDto);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
     public void delete(@PathVariable Long id){
         carBrandService.delete(id);

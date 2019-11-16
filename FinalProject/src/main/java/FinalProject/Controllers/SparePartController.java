@@ -2,6 +2,7 @@ package FinalProject.Controllers;
 
 import FinalProject.Entities.SparePartEntity;
 import FinalProject.Services.SparePartService;
+import FinalProject.dto.SparePartDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +19,19 @@ public class SparePartController {
         return sparePartService.findById(id);
     }
 
-    @PostMapping("create/{name}/{model}")
+    @PostMapping("")
     @ResponseBody
-    public SparePartEntity create(@PathVariable String name,@PathVariable String model) {
-        SparePartEntity sparePartEntity = new SparePartEntity();
-        sparePartEntity.setModel(model);
-        sparePartEntity.setName(name);
-        return sparePartService.create(sparePartEntity);
+    public SparePartEntity create(@RequestBody SparePartDto sparePartDto) {
+        return sparePartService.create(sparePartDto);
     }
 
-    @PutMapping("update/{id}/{name}")
+    @PutMapping("")
     @ResponseBody
-    public SparePartEntity update(@PathVariable Long id, @PathVariable String name){
-        return sparePartService.update(id, name);
+    public SparePartEntity update(@RequestBody SparePartDto sparePartDto){
+        return sparePartService.update(sparePartDto);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
     public void delete(@PathVariable Long id){
         sparePartService.delete(id);

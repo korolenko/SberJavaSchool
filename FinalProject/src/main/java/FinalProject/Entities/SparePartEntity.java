@@ -3,6 +3,7 @@ package FinalProject.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -10,15 +11,15 @@ import javax.persistence.*;
 @Data
 @Table(name = "sparepart", schema = "catalog")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Accessors(chain = true)
 public class SparePartEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    //@ManyToMany
+    @Column(name = "sparepart")
+    private String sparepart;
 
-    @Column(name = "model")
-    private String model;
 }
