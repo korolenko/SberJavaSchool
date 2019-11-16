@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "finalProjectSecondService"
+  main:
+    banner-mode: "log"
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://82.196.10.5:5432/autoservice
+    username: autoservice
+    password: sayplease
+jpa:
+  generate-ddl: true
+  hibernate:
+    hbm2ddl-auto: update
+  show-sql: true
+  database: postgresql
+
+logging:
+  level:
+    org:
+      springframework: ERROR
