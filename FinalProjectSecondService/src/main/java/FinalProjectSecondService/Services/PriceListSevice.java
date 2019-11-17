@@ -26,7 +26,7 @@ public class PriceListSevice {
     }
 
     public PriceListEntity update(PriceListDto priceListDto){
-        PriceListEntity priceListEntity = new PriceListEntity();
+        PriceListEntity priceListEntity = priceListRepository.getOne(priceListDto.getId());
         priceListEntity.setPrice(priceListDto.getPrice());
         priceListEntity.setSparePart(priceListDto.getSparePart());
         return  priceListRepository.save(priceListEntity);
