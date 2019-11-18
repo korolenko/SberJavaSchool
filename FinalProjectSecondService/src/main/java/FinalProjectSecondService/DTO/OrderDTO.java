@@ -12,4 +12,8 @@ public class OrderDTO {
     private Long clientId;
     private Long masterId;
     private Long repairListId;
+
+    public OrderDTO(){
+        this.uuid = UUID.randomUUID();
+    }
 }
