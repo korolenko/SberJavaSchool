@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,4 +31,8 @@ public class OrderEntity {
 
     @Column(name = "repairlistid")
     private Long repairListId;
+
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private Set<RepairListEntity> repairListEntities;
 }

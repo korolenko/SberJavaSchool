@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 @Service
 public class PriceListSevice {
@@ -30,6 +32,13 @@ public class PriceListSevice {
         priceListEntity.setPrice(priceListDto.getPrice());
         priceListEntity.setSparePart(priceListDto.getSparePart());
         return  priceListRepository.save(priceListEntity);
+    }
+
+    public Double getPrice(List<Long> ids) {
+        //TODO : запрос к первому сервису.
+        return priceListRepository.findAllById(ids).stream()
+                .map(PriceListEntity::getPrice)
+                .reduce((a,b) -> a + b).orElse(.0);
     }
 
     public void delete(Long id){

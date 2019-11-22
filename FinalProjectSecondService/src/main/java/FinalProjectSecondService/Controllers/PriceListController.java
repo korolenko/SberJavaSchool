@@ -6,6 +6,8 @@ import FinalProjectSecondService.Services.PriceListSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pricelist")
 public class PriceListController {
@@ -30,6 +32,14 @@ public class PriceListController {
     public PriceListEntity update(@RequestBody PriceListDto priceListDto){
         return priceListSevice.update(priceListDto);
     }
+
+    @PostMapping("/price")
+    @ResponseBody
+    public Double getPrice(@RequestBody List<Long> ids) {
+
+        return priceListSevice.getPrice(ids);
+    }
+
 
     @DeleteMapping("/{id}")
     @ResponseBody

@@ -21,6 +21,11 @@ public class RepairListEntity {
     @Column(name = "orderid")
     private Long orderId;
 
+//    @OneToMany
+//    @JoinColumn(name = "orderid")
+////    @Column(name = "orderid")
+//    private OrderEntity orderId;
+
     @Column(name = "pricelistid")
     private Long pricelistId;
 }
