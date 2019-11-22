@@ -2,6 +2,7 @@ package FinalProject.Services;
 
 import FinalProject.Entities.SparePartEntity;
 import FinalProject.Repositories.SparePartRepository;
+import FinalProject.dto.SparePartDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,9 @@ public class SparePartService {
         return sparePartRepository.getOne(id);
     }
 
-    public SparePartEntity create(SparePartEntity sparePartEntity){
+    public SparePartEntity create(SparePartDto sparePartDto){
+        SparePartEntity sparePartEntity = new SparePartEntity();
+        sparePartEntity.setSparepart(sparePartDto.getSparepart());
         return sparePartRepository.save(sparePartEntity);
     }
 
@@ -25,9 +28,9 @@ public class SparePartService {
         sparePartRepository.delete(sparePartRepository.getOne(id));
     }
 
-    public  SparePartEntity update(Long id, String name){
-        SparePartEntity carModelEntity = sparePartRepository.getOne(id);
-        carModelEntity.setName(name);
+    public  SparePartEntity update(SparePartDto sparePartDto){
+        SparePartEntity carModelEntity = sparePartRepository.getOne(sparePartDto.getId());
+        carModelEntity.setSparepart(sparePartDto.getSparepart());
         return sparePartRepository.save(carModelEntity);
     }
 }
