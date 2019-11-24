@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		
+	<script>
+		$(document).ready(function(){
+			 $('#brands').click(function(e) {
+				console.log("нажатие на выпадающий список работает");
+				$('#brands-menu').empty();
+				get_brands();
+			});
+		});
+	</script>
+	
+	<script>
+		$(document).ready(function(){
+			$('#brands-menu').on('click', ".dropdown-item", function() {
+					console.log("нажатие на dropdown-item работает");
+					$('#brand-id').text($( this ).text());
+			});
+		})
+	</script>
+	
+	<script>	
+	function get_brands(){
+		var URL = 'http://localhost:8081/brand/all';
+				console.log("get_brands");
+				console.log(URL);
+				$.ajax({
+					type: "GET",
+					url: URL,
+					dataType: "json",
+					crossDomain: true,	
+					data : {
+						brands:"brands"
+					},
+					success: function(data){
+						console.log(JSON.stringify(data));
+						for (i = 0; i < data.length; i++) {
+						var li =  $("<a/>" , { id : "item"+i, class : "dropdown-item", text : JSON.stringify(data[i])})
+						$('#brands-menu').append(li);
+						}
+				},
+				error: function(Eror){
+					console.log(Eror);
+				}
+				});
+	}
+	</script>
+	
+    <title>Hello, world!</title>
+  </head>
+  <body>
+	
+    <div class="container">
+		<h1>Добро пожаловать в автосервис</h1>
+		<p><b>Выберите модель авто из списка ниже:</b></p>
+		
+		<div class="dropdown open">
+		  <button id ="brands" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Марка авто
+		  </button>
+		  <div id ="brands-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		  <a class="dropdown-item" href="#">Action</a>
+		  </div>
+		</div>
+		<br>
+		<p><b>Чинить будем:</b></p>
+		<p>Марка:</p> <p id = 'brand-id'></p>
+	</div>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
