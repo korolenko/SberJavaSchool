@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 public class CarModelService {
@@ -18,6 +21,12 @@ public class CarModelService {
         return carModelRepository.getOne(id);
     }
 
+
+    public List<String> findAll(){
+        return carModelRepository.findAll().stream()
+                .map(CarModelEntity::getModel)
+                .collect(Collectors.toList());
+    }
     public CarModelEntity create(CarModelDto carModelDto){
         return carModelRepository.save(new CarModelEntity().setModel(carModelDto.getModel()));
     }

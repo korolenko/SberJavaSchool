@@ -7,6 +7,8 @@ import FinalProject.dto.CarModelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/model")
 public class CarModelController {
@@ -36,5 +38,12 @@ public class CarModelController {
     @ResponseBody
     public void delete(@PathVariable Long id){
         carModelService.delete(id);
+    }
+
+    @CrossOrigin
+    @GetMapping("/all")
+    @ResponseBody
+    public List<String> getAll(){
+        return carModelService.findAll();
     }
 }

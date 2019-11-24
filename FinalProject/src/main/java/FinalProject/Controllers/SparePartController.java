@@ -6,6 +6,8 @@ import FinalProject.dto.SparePartDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/sparepart")
 public class SparePartController {
@@ -35,6 +37,13 @@ public class SparePartController {
     @ResponseBody
     public void delete(@PathVariable Long id){
         sparePartService.delete(id);
+    }
+
+    @CrossOrigin
+    @GetMapping("/all")
+    @ResponseBody
+    public List<String> getAll(){
+        return sparePartService.findAll();
     }
 }
 

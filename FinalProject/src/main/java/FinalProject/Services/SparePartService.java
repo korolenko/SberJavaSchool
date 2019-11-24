@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 public class SparePartService {
@@ -16,6 +19,12 @@ public class SparePartService {
 
     public SparePartEntity findById(Long id){
         return sparePartRepository.getOne(id);
+    }
+
+    public List<String> findAll(){
+        return sparePartRepository.findAll().stream()
+                .map(SparePartEntity::getSparepart)
+                .collect(Collectors.toList());
     }
 
     public SparePartEntity create(SparePartDto sparePartDto){
