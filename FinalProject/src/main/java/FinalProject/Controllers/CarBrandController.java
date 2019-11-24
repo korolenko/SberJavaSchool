@@ -6,6 +6,9 @@ import FinalProject.dto.CarBrandDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/brand")
 public class CarBrandController {
@@ -35,5 +38,12 @@ public class CarBrandController {
     @ResponseBody
     public void delete(@PathVariable Long id){
         carBrandService.delete(id);
+    }
+
+    @CrossOrigin
+    @GetMapping("/all")
+    @ResponseBody
+    public List<String> getAll(){
+        return carBrandService.findAll();
     }
 }

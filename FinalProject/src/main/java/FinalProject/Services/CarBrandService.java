@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 public class CarBrandService {
@@ -16,6 +19,12 @@ public class CarBrandService {
 
     public CarBrandEntity findById(Long id){
         return carBrandRepository.getOne(id);
+    }
+
+    public List<String> findAll(){
+        return carBrandRepository.findAll().stream()
+                .map(CarBrandEntity::getBrand)
+                .collect(Collectors.toList());
     }
 
     public CarBrandEntity create(CarBrandDto carBrandDto){
