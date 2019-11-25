@@ -13,9 +13,19 @@
 	<script>
 		$(document).ready(function(){
 			 $('#brands').click(function(e) {
-				console.log("нажатие на выпадающий список работает");
 				$('#brands-menu').empty();
-				get_brands();
+				var element = $('#brands-menu')
+				get_brands('http://localhost:8081/brand/all',element);
+			});
+		});
+	</script>
+	
+	<script>
+		$(document).ready(function(){
+			 $('#models').click(function(e) {
+				$('#models-menu').empty();
+				var element = $('#models-menu');
+				get_brands('http://localhost:8081/model/all',element);
 			});
 		});
 	</script>
@@ -29,14 +39,22 @@
 		})
 	</script>
 	
+		<script>
+		$(document).ready(function(){
+			$('#models-menu').on('click', ".dropdown-item", function() {
+					console.log("нажатие на dropdown-item работает");
+					$('#model-id').text($( this ).text());
+			});
+		})
+	</script>
+	
 	<script>	
-	function get_brands(){
-		var URL = 'http://localhost:8081/brand/all';
+	function get_brands(url, element){
 				console.log("get_brands");
-				console.log(URL);
+				console.log(url);
 				$.ajax({
 					type: "GET",
-					url: URL,
+					url: url,
 					dataType: "json",
 					crossDomain: true,	
 					data : {
@@ -46,7 +64,7 @@
 						console.log(JSON.stringify(data));
 						for (i = 0; i < data.length; i++) {
 						var li =  $("<a/>" , { id : "item"+i, class : "dropdown-item", text : JSON.stringify(data[i])})
-						$('#brands-menu').append(li);
+						element.append(li);
 						}
 				},
 				error: function(Eror){
@@ -56,25 +74,82 @@
 	}
 	</script>
 	
+	<script>
+	$(document).ready(function() {
+		$('#sparepart').click(function() {
+			addCheckbox($('#txtName').val());
+		});
+	});
+
+	function addCheckbox(name) {
+	   var container = $('#spare_container');
+
+	   $('<input />', { type: 'checkbox', id: 'cb', value: "aa" }).appendTo(container);
+	   $('<label />', { 'for': 'cb', text: "bb" }).appendTo(container);
+	}
+</script>
+	
     <title>Hello, world!</title>
   </head>
   <body>
 	
     <div class="container">
 		<h1>Добро пожаловать в автосервис</h1>
-		<p><b>Выберите модель авто из списка ниже:</b></p>
+		<p><b>Выберите параметры автомобиля:</b></p>
 		
-		<div class="dropdown open">
-		  <button id ="brands" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Марка авто
-		  </button>
-		  <div id ="brands-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		  <a class="dropdown-item" href="#">Action</a>
-		  </div>
+		<div class="container-fluid">
+			<div class="row">
+			
+				<div class="col">
+					<div class="dropdown open">
+						  <button id ="brands" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Производитель
+						  </button>
+						  <div id ="brands-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						  </div>
+					 </div>
+				</div>	
+				
+				<div class="col">
+					 <div class="dropdown open">
+						  <button id ="models" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Модель
+						  </button>
+						  <div id ="models-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						  </div>
+					</div>
+				</div>
+			</div>
+			
+			<br>
+			<p>
+
+			<button id ="sparepart" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+				Посмотреть, что можно починить
+			</button>
+			
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body">
+				  <div id = "spare_container" class="row"> 
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+					  <label class="form-check-label" for="inlineCheckbox1">деталь 1</label>
+					</div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+					  <label class="form-check-label" for="inlineCheckbox2">деталь 2</label>
+					</div>
+				  </div>
+				</div>
+			</div>
+			<br>
+			<p><b>Вы выбрали:</b></p>
+			
+			<div class="container">
+				<div class="row"> <p>Производитель:</p> <p id = 'brand-id'></p></div>
+				<div class="row"><p>Модель:</p> <p id = 'model-id'></p></div>
+			</div>
 		</div>
-		<br>
-		<p><b>Чинить будем:</b></p>
-		<p>Марка:</p> <p id = 'brand-id'></p>
 	</div>
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
