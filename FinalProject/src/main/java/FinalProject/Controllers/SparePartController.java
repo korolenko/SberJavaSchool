@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sparepart")
@@ -42,7 +43,7 @@ public class SparePartController {
     @CrossOrigin
     @GetMapping("/all")
     @ResponseBody
-    public List<String> getAll(){
+    public Map<Long,String> getAll(){
         return sparePartService.findAll();
     }
 }

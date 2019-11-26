@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -21,10 +22,9 @@ public class SparePartService {
         return sparePartRepository.getOne(id);
     }
 
-    public List<String> findAll(){
+    public Map<Long,String> findAll(){
         return sparePartRepository.findAll().stream()
-                .map(SparePartEntity::getSparepart)
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(SparePartEntity::getId,SparePartEntity::getSparepart));
     }
 
     public SparePartEntity create(SparePartDto sparePartDto){

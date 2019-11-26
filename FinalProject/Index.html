@@ -77,15 +77,39 @@
 	<script>
 	$(document).ready(function() {
 		$('#sparepart').click(function() {
-			addCheckbox($('#txtName').val());
+			addCheckbox();
 		});
 	});
 
-	function addCheckbox(name) {
-	   var container = $('#spare_container');
-
-	   $('<input />', { type: 'checkbox', id: 'cb', value: "aa" }).appendTo(container);
-	   $('<label />', { 'for': 'cb', text: "bb" }).appendTo(container);
+	function addCheckbox() {
+	   var container = $('#spare_container1');
+	   container.empty();
+	   var url = 'http://localhost:8081/sparepart/all'
+	   $.ajax({
+					type: "GET",
+					url: url,
+					dataType: "json",
+					crossDomain: true,	
+					data1 : {
+						id:"id",
+						sparepart:"sparepart"
+					},
+					success: function(data1){
+						//console.log(JSON.stringify(data1));
+					console.log(data1["4"]);
+						for (element1 in data1) {
+							console.log(data1[element1]);
+							var divv = $('<div />', {class: "form-check form-check-inline", id: element1});
+							divv.appendTo(container);
+							$('<input />', { type: 'checkbox', class: "form-check-input", id: element1, value: data1[element1] }).appendTo(divv);
+							$('<label />', { 'for': 'inlineCheckbox3', class: "form-check-label", text: data1[element1] }).appendTo(divv);
+						}
+				},
+				error: function(Eror){
+					console.log(Eror);
+				}
+				});
+	   
 	}
 </script>
 	
@@ -131,11 +155,9 @@
 			<div class="collapse" id="collapseExample">
 				<div class="card card-body">
 				  <div id = "spare_container" class="row"> 
-					<div class="form-check form-check-inline">
-					  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+					<div id = "spare_container1" class="form-check form-check-inline">
+					  <input id = "test1" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
 					  <label class="form-check-label" for="inlineCheckbox1">деталь 1</label>
-					</div>
-					<div class="form-check form-check-inline">
 					  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
 					  <label class="form-check-label" for="inlineCheckbox2">деталь 2</label>
 					</div>
