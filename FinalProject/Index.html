@@ -10,7 +10,10 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		
+		
 	<script>
+	//задаем brand_id
+	var brand_id = 0;
 		$(document).ready(function(){
 			 $('#brands').click(function(e) {
 				$('#brands-menu').empty();
@@ -25,7 +28,7 @@
 			 $('#models').click(function(e) {
 				$('#models-menu').empty();
 				var element = $('#models-menu');
-				get_brands('http://localhost:8081/model/all',element);
+				get_brands('http://localhost:8081/model/brandid/'+brand_id,element);
 			});
 		});
 	</script>
@@ -34,6 +37,9 @@
 		$(document).ready(function(){
 			$('#brands-menu').on('click', ".dropdown-item", function() {
 					console.log("нажатие на dropdown-item работает");
+					//сохраняем id выбранного бренда
+					brand_id=$(this).attr('id');
+					console.log(brand_id);
 					$('#brand-id').text($( this ).text());
 			});
 		})
@@ -58,12 +64,13 @@
 					dataType: "json",
 					crossDomain: true,	
 					data : {
-						brands:"brands"
+						id:"id",
+						brand:"brand"
 					},
 					success: function(data){
 						console.log(JSON.stringify(data));
-						for (i = 0; i < data.length; i++) {
-						var li =  $("<a/>" , { id : "item"+i, class : "dropdown-item", text : JSON.stringify(data[i])})
+						for (brand in data) {
+						var li =  $("<a/>" , { id : brand, class : "dropdown-item", text : data[brand]})
 						element.append(li);
 						}
 				},
@@ -140,16 +147,17 @@
 							Модель
 						  </button>
 						  <div id ="models-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item">Dsd</a>
 						  </div>
 					</div>
 				</div>
 			</div>
 			
 			<br>
+			<p>Детали, доступные для ремонта:</p>
 			<p>
-
 			<button id ="sparepart" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-				Посмотреть, что можно починить
+				Посмотреть
 			</button>
 			
 			<div class="collapse" id="collapseExample">
@@ -165,11 +173,13 @@
 				</div>
 			</div>
 			<br>
-			<p><b>Вы выбрали:</b></p>
-			
-			<div class="container">
-				<div class="row"> <p>Производитель:</p> <p id = 'brand-id'></p></div>
-				<div class="row"><p>Модель:</p> <p id = 'model-id'></p></div>
+			<div class="alert alert-secondary" role="alert">
+				<p><b>Вы выбрали:</b></p>
+				
+				<div class="container">
+					<div class="row"> <p>Производитель:</p> <p id = 'brand-id'></p></div>
+					<div class="row"><p>Модель: </p> <p id = 'model-id'></p></div>
+				</div>
 			</div>
 		</div>
 	</div>

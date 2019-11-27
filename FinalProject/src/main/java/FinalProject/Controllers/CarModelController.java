@@ -22,6 +22,11 @@ public class CarModelController {
         return carModelService.findById(id);
     }
 
+    @RequestMapping(value = "/brandid/{brandId}", method = RequestMethod.GET)
+    public List<String> getModelsByBrandId(@PathVariable Long brandId){
+        return carModelService.findByBrandId(brandId);
+    }
+
     @PostMapping("")
     @ResponseBody
     public CarModelEntity create(@RequestBody CarModelDto carModelDto) {

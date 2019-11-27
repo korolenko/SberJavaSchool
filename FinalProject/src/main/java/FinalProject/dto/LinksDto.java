@@ -6,7 +6,6 @@ import lombok.Data;
 public class LinksDto {
 
     private Long id;
-    private String brand;
-    private String model;
-    private String sparepart;
+    private Long brandId;
+    private Long modelId;
 }

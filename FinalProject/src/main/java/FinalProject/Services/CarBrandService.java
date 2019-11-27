@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -21,10 +22,9 @@ public class CarBrandService {
         return carBrandRepository.getOne(id);
     }
 
-    public List<String> findAll(){
+    public Map<Long,String> findAll(){
         return carBrandRepository.findAll().stream()
-                .map(CarBrandEntity::getBrand)
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(CarBrandEntity::getId,CarBrandEntity::getBrand));
     }
 
     public CarBrandEntity create(CarBrandDto carBrandDto){

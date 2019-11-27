@@ -17,19 +17,15 @@ public class LinksEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "brand")
-    private String brand;
+    @Column(name = "brandid")
+    private Long brandId;
 
-    @Column(name = "model")
-    private String model;
+    @Column(name = "modelid")
+    private Long modelId;
 
-    @Column(name = "sparepart")
-    private String sparePart;
-
-    public LinksEntity(String brand, String model, String sparePart){
-        this.brand = brand;
-        this.model = model;
-        this.sparePart = sparePart;
+    public LinksEntity(Long brandId, Long modelId){
+        this.brandId = brandId;
+        this.modelId = modelId;
     }
 
     public LinksEntity(){

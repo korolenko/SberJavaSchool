@@ -6,7 +6,7 @@ import FinalProject.dto.CarBrandDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -43,7 +43,7 @@ public class CarBrandController {
     @CrossOrigin
     @GetMapping("/all")
     @ResponseBody
-    public List<String> getAll(){
+    public Map<Long,String> getAll(){
         return carBrandService.findAll();
     }
 }
