@@ -82,8 +82,71 @@
 	</script>
 	
 	<script>
+	// задаем id запчастей
+	$(document).ready(function(){
+		$('#spare_container1').on('change', ".form-check-input", function() {
+			var sparepart_id = parseInt($( this ).attr('id'));
+			console.log('id выбранной детали: ' + sparepart_id);
+				var arr_index = sparepartIdArray.indexOf(sparepart_id);
+				console.log("indexOf " + arr_index);
+				//удаляем, если такой элемент уже есть
+				if (arr_index == 0){
+					sparepartIdArray.splice(arr_index, 1);
+					console.log('удалили id: ' + sparepart_id);
+					//console.log($( this ).val()+(", "));
+					//$('#sparepart-id').html().split($( this ).val()+(", ")).join("");
+				}
+				//добавляем новый элемет
+				else if (arr_index == -1){
+					sparepartIdArray.push(sparepart_id);
+					console.log('добавили id: ' + sparepart_id);
+					$('#sparepart-id').append($( this ).val()).append(", ");
+				}
+				console.log(sparepartIdArray);
+				//$('#sparepart-id').text($( this ).val());
+			});
+		})
+	</script>
+	
+	<script>
+	//нажатие кнопки посчитать, читаем ФИО
+	$(document).ready(function() {
+		$('#calcButton').click(function() {
+		var  clientFIO = $('#ClientName').val();
+		if (clientFIO.length > 0){
+			console.log($('#ClientName').val());
+			$('#FIO-id').text($('#ClientName').val());
+		}
+		$.ajax({
+			type: "POST",
+			url: "http://localhost:8082/pricelist/price",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data : JSON.stringify(sparepartIdArray),
+			success: function(data){
+				console.log(JSON.stringify(data));
+				$('#Full-price-id').text(data);
+			},
+			error: function(Eror){
+				console.log(Eror);
+			}
+	});
+		//$.post( "http://localhost:8082/pricelist/price", {sparepartIdArray})
+			//.done(function( data ) {
+			//console.log( "Data Loaded: " + data );
+		//});
+		});
+	});
+	</script>
+	
+	<script>
+	//задаем массив id запчастей
+	let sparepartIdArray = [];
 	$(document).ready(function() {
 		$('#sparepart').click(function() {
+			sparepartIdArray = [];
+			$('#sparepart-id').text("");
+			$('#Full-price-id').text("");
 			addCheckbox();
 		});
 	});
@@ -96,7 +159,8 @@
 					type: "GET",
 					url: url,
 					dataType: "json",
-					crossDomain: true,	
+					contentType: "application/json; charset=utf-8",
+					//crossDomain: true,	
 					data1 : {
 						id:"id",
 						sparepart:"sparepart"
@@ -126,7 +190,19 @@
 	
     <div class="container">
 		<h1>Добро пожаловать в автосервис</h1>
-		<p><b>Выберите параметры автомобиля:</b></p>
+		
+		<br>
+		<p><b>Пожалуйста, представьтесь:</b></p>
+		
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<span class="input-group-text" id="basic-addon1">ФИО:</span>
+			</div>
+			<input id = "ClientName" type="text" class="form-control" placeholder="Иванов Иван Иванович" aria-label="Clientname" aria-describedby="basic-addon1">
+		</div>
+		
+		<br>
+		<p><b>Укажите, пожалуйста, параметры своего автомобиля:</b></p>
 		
 		<div class="container-fluid">
 			<div class="row">
@@ -147,7 +223,6 @@
 							Модель
 						  </button>
 						  <div id ="models-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<a class="dropdown-item">Dsd</a>
 						  </div>
 					</div>
 				</div>
@@ -174,13 +249,24 @@
 			</div>
 			<br>
 			<div class="alert alert-secondary" role="alert">
-				<p><b>Вы выбрали:</b></p>
+				<p><b>Выбранные опции:</b></p>
 				
 				<div class="container">
 					<div class="row"> <p>Производитель:</p> <p id = 'brand-id'></p></div>
 					<div class="row"><p>Модель: </p> <p id = 'model-id'></p></div>
+					<div class="row"><p>Чинить будем: </p> <p id = 'sparepart-id'></p></div>
 				</div>
 			</div>
+			
+			<div class="container">
+				<button id = "calcButton" type="button" class="btn btn-primary">
+				Сформировать заказ на ремонт
+				</button>
+				<br>
+				<div class="row"> <p>ФИО клиента: </p> <p id = 'FIO-id'></p></div>
+				<div class="row"> <p>Стоимость ремонта выбранных деталей: </p> <p id = 'Full-price-id'></p></div>
+			</div>
+			
 		</div>
 	</div>
    
