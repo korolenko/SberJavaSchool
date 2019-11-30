@@ -19,7 +19,7 @@ public class LinksService {
     }
 
     public LinksEntity create(LinksDto linksDto){
-        LinksEntity  linksEntity = new LinksEntity(linksDto.getBrand(), linksDto.getModel(), linksDto.getSparepart());
+        LinksEntity  linksEntity = new LinksEntity(linksDto.getBrandId(), linksDto.getModelId());
         return linksRepository.save(linksEntity);
     }
 
@@ -29,9 +29,8 @@ public class LinksService {
 
     public  LinksEntity update(LinksDto linksDto){
         LinksEntity linksEntity = linksRepository.getOne(linksDto.getId());
-        linksEntity.setBrand(linksDto.getBrand());
-        linksEntity.setModel(linksDto.getModel());
-        linksEntity.setSparePart(linksDto.getSparepart());
+        linksEntity.setBrandId(linksDto.getBrandId());
+        linksEntity.setModelId(linksDto.getModelId());
         return linksRepository.save(linksEntity);
     }
 }
