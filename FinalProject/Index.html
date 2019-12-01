@@ -81,6 +81,57 @@
 	}
 	</script>
 	
+	
+	<script>	
+	function update_master(id,mastername){
+		var url = 'http://localhost:8082/master/';
+		console.log("update_master");
+		console.log(url);
+		$.ajax({
+			type: "PUT",
+			url: url,
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",	
+			data: JSON.stringify(
+				{ "id": id,
+				  "masterName": mastername,
+				  "buzy" : "true"
+				}
+			),
+		success: function(data){
+			console.log("success");
+		},
+		error: function(Eror){
+			console.log(Eror);
+		}
+		});
+	}
+	</script>
+	
+	<script>
+		function save_client(client_name){
+			
+			var url  = "http://localhost:8082/client/";
+			$.ajax({
+			type: "POST",
+			url: url,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data : JSON.stringify(
+				{
+				"name":client_name
+				}
+			),
+			success: function(data){
+				console.log("save_client success");
+			},
+			error: function(Eror){
+				console.log(Eror);
+			}
+			});
+		}
+	</script>
+	
 	<script>
 	// задаем id запчастей
 	$(document).ready(function(){
@@ -115,7 +166,10 @@
 		var  clientFIO = $('#ClientName').val();
 		if (clientFIO.length > 0){
 			console.log($('#ClientName').val());
-			$('#FIO-id').text($('#ClientName').val());
+			$('#FIO-id').text(clientFIO);
+			
+			// сохраняем клиента в базу
+			save_client(clientFIO);
 		}
 		$.ajax({
 			type: "POST",
@@ -130,13 +184,68 @@
 			error: function(Eror){
 				console.log(Eror);
 			}
-	});
-		//$.post( "http://localhost:8082/pricelist/price", {sparepartIdArray})
-			//.done(function( data ) {
-			//console.log( "Data Loaded: " + data );
-		//});
+		});
+		
+		//определяем свободного мастера
+		$.ajax({
+			type: "GET",
+			url: "http://localhost:8082/master/free",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data : {
+						id:"id",
+						mastername:"mastername"
+					},
+			success: function(data){
+				console.log(JSON.stringify(data));
+				$('#Master-id').text(data['mastername']);
+				//записываем в базу, что выбранный мастер теперь трудится
+				update_master(data['id'],data['mastername']);
+			},
+			error: function(Eror){
+				console.log(Eror);
+			}
+		
+		});	
+
+	//формируем прайс лист для отображения
+		get_prices(sparepartIdArray);
 		});
 	});
+	</script>
+	
+	<script>
+	function get_prices(sparepartIdArray){
+		var url = 'http://localhost:8082/pricelist/getSelected';
+		console.log("get_prices");
+		console.log(sparepartIdArray);
+		$.ajax({
+			type: "POST",
+			url: url,
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",	
+			data : JSON.stringify(sparepartIdArray),
+		success: function(data){
+			console.log("success get_prices");
+			var container = $('#card-text-id');
+			//for (keys() in data) {
+			//console.log(Object.keys(data).length);
+			//console.log(JSON.stringify(data));
+				//"card-text-id"
+						var pi =  $("<p/>" , { id : data['sparepart'], text : "деталь: " + data['sparepart'] + ", цена: " + data['price']})
+						container.append(pi);
+						console.log(data['sparepart']);
+				//}
+			//console.log(data);
+			//for(int i = 0; i<jsonObject.names().length(); i++){
+			//console.log(i);
+			//}
+		},
+		error: function(Eror){
+			console.log(Eror);
+		}
+		});
+	}
 	</script>
 	
 	<script>
@@ -202,7 +311,7 @@
 		</div>
 		
 		<br>
-		<p><b>Укажите, пожалуйста, параметры своего автомобиля:</b></p>
+		<p><b>Укажите параметры автомобиля:</b></p>
 		
 		<div class="container-fluid">
 			<div class="row">
@@ -258,14 +367,22 @@
 				</div>
 			</div>
 			
-			<div class="container">
-				<button id = "calcButton" type="button" class="btn btn-primary">
+			
+			<button id ="calcButton" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#order" aria-expanded="false" aria-controls="order">
 				Сформировать заказ на ремонт
-				</button>
-				<br>
-				<div class="row"> <p>ФИО клиента: </p> <p id = 'FIO-id'></p></div>
-				<div class="row"> <p>Стоимость ремонта выбранных деталей: </p> <p id = 'Full-price-id'></p></div>
-			</div>
+			</button>
+			
+				<div class="collapse" id="order">
+					<div class="card" style="width: 67rem;">
+						<div class="card-body">
+							<h5 class="card-title">Заказ на ремонт</h5>
+							<h6 class="card-subtitle mb-2 text-muted">Клиент: <p id = 'FIO-id'></p></h6>
+							<h6 class="card-subtitle mb-2 text-muted">Мастер: <p id = 'Master-id'></p></h6>
+							<p id = "card-text-id" class="card-text">Список выбранных деталей для ремонта:</p>
+							<p class="card-text">Стоимость ремонта выбранных деталей: </p> <p id = 'Full-price-id'></p>
+						</div>
+					</div>
+				</div>
 			
 		</div>
 	</div>
