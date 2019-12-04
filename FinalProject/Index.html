@@ -14,6 +14,8 @@
 	<script>
 	//задаем brand_id
 	var brand_id = 0;
+
+	
 		$(document).ready(function(){
 			 $('#brands').click(function(e) {
 				$('#brands-menu').empty();
@@ -29,6 +31,15 @@
 				$('#models-menu').empty();
 				var element = $('#models-menu');
 				get_brands('http://localhost:8081/model/brandid/'+brand_id,element);
+					
+				var  clientFIO = $('#ClientName').val();
+				if (clientFIO.length > 0){
+				console.log($('#ClientName').val());
+				$('#FIO-id').text(clientFIO);
+				
+				// сохраняем клиента в базу
+				save_client(clientFIO);
+				}
 			});
 		});
 	</script>
@@ -85,7 +96,7 @@
 	<script>	
 	function update_master(id,mastername){
 		var url = 'http://localhost:8082/master/';
-		console.log("update_master");
+		console.log("записываем в базу, что выбранный мастер теперь трудится");
 		console.log(url);
 		$.ajax({
 			type: "PUT",
@@ -110,7 +121,7 @@
 	
 	<script>
 		function save_client(client_name){
-			
+			console.log("сохраняем клиента в базу");
 			var url  = "http://localhost:8082/client/";
 			$.ajax({
 			type: "POST",
@@ -163,14 +174,44 @@
 	//нажатие кнопки посчитать, читаем ФИО
 	$(document).ready(function() {
 		$('#calcButton').click(function() {
-		var  clientFIO = $('#ClientName').val();
-		if (clientFIO.length > 0){
-			console.log($('#ClientName').val());
-			$('#FIO-id').text(clientFIO);
-			
-			// сохраняем клиента в базу
-			save_client(clientFIO);
-		}
+		
+		//определяем свободного мастера
+				$.ajax({
+					type: "GET",
+					url: "http://localhost:8082/master/free",
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					data : {
+								id:"id",
+								mastername:"mastername"
+							},
+					success: function(data){
+						console.log("определяем свободного мастера");
+						console.log(JSON.stringify(data));
+						$('#Master-id').text(data['mastername']);
+						//записываем в базу, что выбранный мастер теперь трудится
+						update_master(data['id'],data['mastername']);
+						
+						//создаем ордер
+						console.log("создаем ордер");
+						var order_uuid = uuidv4();
+						$('#UUID-id').text(order_uuid);
+						create_order(order_uuid,client_id,data['id']);
+						console.log("записываем repairlist");
+						
+						//записываем repairlist
+						for (element in sparepartIdArray){
+							//console.log(sparepartIdArray[element]);
+							//console.log(order_uuid);
+							create_repair_list(order_uuid,sparepartIdArray[element]);
+						}
+					},
+					error: function(Eror){
+						console.log(Eror);
+					}		
+				});	
+		
+		
 		$.ajax({
 			type: "POST",
 			url: "http://localhost:8082/pricelist/price",
@@ -179,42 +220,108 @@
 			data : JSON.stringify(sparepartIdArray),
 			success: function(data){
 				console.log(JSON.stringify(data));
-				$('#Full-price-id').text(data);
+				$('#Full-price-id').text("Итого: " + data);
 			},
 			error: function(Eror){
 				console.log(Eror);
 			}
 		});
 		
-		//определяем свободного мастера
-		$.ajax({
-			type: "GET",
-			url: "http://localhost:8082/master/free",
-			contentType: "application/json; charset=utf-8",
-			dataType: "json",
-			data : {
-						id:"id",
-						mastername:"mastername"
-					},
-			success: function(data){
-				console.log(JSON.stringify(data));
-				$('#Master-id').text(data['mastername']);
-				//записываем в базу, что выбранный мастер теперь трудится
-				update_master(data['id'],data['mastername']);
-			},
-			error: function(Eror){
-				console.log(Eror);
-			}
-		
-		});	
 
 	//формируем прайс лист для отображения
+		$('#card-text-id').text('');
 		get_prices(sparepartIdArray);
+
 		});
 	});
 	</script>
 	
+	
 	<script>
+	function create_repair_list(uuid, sparepartID){
+		var url = 'http://localhost:8082/repairlist/';
+		console.log("create_repair_list sparepartID: " +  sparepartID);
+		$.ajax({
+			type: "POST",
+			url: url,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data : JSON.stringify(
+				{
+				"orderUUID":uuid,
+				"pricelistId": sparepartID
+				}
+			),
+			success: function(data){
+				console.log("save_repairlist success");
+			},
+			error: function(Eror){
+				console.log(Eror);
+			}
+		});
+	}
+	
+	</script>
+	
+	
+	<script>
+	function uuidv4() {
+		return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+			(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+		);
+	}
+	
+	
+	function create_order(uuid,clientId,masterId){
+		var url = 'http://localhost:8082/order/';
+		console.log("create_order");
+		$.ajax({
+			type: "POST",
+			url: url,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data : JSON.stringify(
+				{
+				"uuid":uuid,
+				"clientId": clientId,
+				"masterId": masterId,
+				
+				}
+			),
+			success: function(data){
+				console.log("save_client success");
+			},
+			error: function(Eror){
+				console.log(Eror);
+			}
+		});
+	}
+	
+	
+	function get_client_id(clientFIO){
+		var url = 'http://localhost:8082/client/getidbyname';
+		console.log("get_client_id");
+		console.log("fio: " + clientFIO);
+		$.ajax({
+			type: "POST",
+			url: url,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: JSON.stringify(
+				{
+				  "name": clientFIO
+				}
+			),
+			success: function(data){
+				client_id = data;
+				console.log("success get_client_id client_id: " + client_id);
+			},
+			error: function(Eror){
+				console.log(Eror);
+			}
+		});
+	}
+	
 	function get_prices(sparepartIdArray){
 		var url = 'http://localhost:8082/pricelist/getSelected';
 		console.log("get_prices");
@@ -226,20 +333,34 @@
 			contentType: "application/json; charset=utf-8",	
 			data : JSON.stringify(sparepartIdArray),
 		success: function(data){
-			console.log("success get_prices");
 			var container = $('#card-text-id');
-			//for (keys() in data) {
-			//console.log(Object.keys(data).length);
-			//console.log(JSON.stringify(data));
-				//"card-text-id"
-						var pi =  $("<p/>" , { id : data['sparepart'], text : "деталь: " + data['sparepart'] + ", цена: " + data['price']})
-						container.append(pi);
-						console.log(data['sparepart']);
-				//}
-			//console.log(data);
-			//for(int i = 0; i<jsonObject.names().length(); i++){
-			//console.log(i);
-			//}
+			
+			//создаем таблицу
+			var table_var = $("<table/>", {class: "table"});
+			var thead_var = $("<thead/>");
+			var  tr_var = $("<tr/>");
+			thead_var.append(tr_var);
+			var th_var_1 = $("<th/>", { scope: "col", text: "деталь" });
+			var th_var_2 = $("<th/>", { scope: "col", text: "цена" });
+			thead_var.append(th_var_1);
+			thead_var.append(th_var_2);
+			table_var.append(thead_var);
+			var tbody_var = $("<tbody/>");
+			
+			
+			for (element in data) {
+					//var pi =  $("<p/>" , { id : element, text : "деталь: " + element  + ", цена: " + data[element]})
+					//container.append(pi);
+					//заполняем строки таблицы
+					var tr_var = $("<tr/>");
+					var td_var_1 = $("<td/>", {text:element});
+					var td_var_2 = $("<td/>", {text:data[element]});
+					tr_var.append(td_var_1);
+					tr_var.append(td_var_2);
+					tbody_var.append(tr_var);
+				}
+			table_var.append(tbody_var);	
+			container.append(table_var);
 		},
 		error: function(Eror){
 			console.log(Eror);
@@ -251,12 +372,20 @@
 	<script>
 	//задаем массив id запчастей
 	let sparepartIdArray = [];
+	// задаем client_id
+	var client_id = 0	;
+	
 	$(document).ready(function() {
 		$('#sparepart').click(function() {
 			sparepartIdArray = [];
 			$('#sparepart-id').text("");
 			$('#Full-price-id').text("");
 			addCheckbox();
+			
+			var  clientFIO = $('#ClientName').val();
+			// получаем id клиента
+			get_client_id(clientFIO);
+			
 		});
 	});
 
@@ -293,7 +422,7 @@
 	}
 </script>
 	
-    <title>Hello, world!</title>
+    <title>Сбер Автосервис</title>
   </head>
   <body>
 	
@@ -303,6 +432,7 @@
 		<br>
 		<p><b>Пожалуйста, представьтесь:</b></p>
 		
+
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
 				<span class="input-group-text" id="basic-addon1">ФИО:</span>
@@ -376,10 +506,11 @@
 					<div class="card" style="width: 67rem;">
 						<div class="card-body">
 							<h5 class="card-title">Заказ на ремонт</h5>
+							<h6 class="card-subtitle mb-2 text-muted">UUID заказа: <p id = 'UUID-id'></p></h6>
 							<h6 class="card-subtitle mb-2 text-muted">Клиент: <p id = 'FIO-id'></p></h6>
 							<h6 class="card-subtitle mb-2 text-muted">Мастер: <p id = 'Master-id'></p></h6>
-							<p id = "card-text-id" class="card-text">Список выбранных деталей для ремонта:</p>
-							<p class="card-text">Стоимость ремонта выбранных деталей: </p> <p id = 'Full-price-id'></p>
+							<p id = "card-text-id" class="card-text">Прайс-лист выбранных деталей для ремонта:</p>
+							<p id = 'Full-price-id' class="card-text"><b></b></p> 
 						</div>
 					</div>
 				</div>
